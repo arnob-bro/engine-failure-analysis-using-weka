@@ -2,7 +2,7 @@ package enginefault;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.SMO;
+import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
@@ -18,7 +18,7 @@ import java.util.Random;
  * Algorithms:
  *   - RandomForest (ensemble of 100 decision trees)
  *   - J48 (C4.5 decision tree)
- *   - SMO (Support Vector Machine)
+ *   - AdaBoostM1 (boosting ensemble with J48 base learner)
  *
  * Metrics reported per classifier:
  *   - Accuracy, Precision (weighted), Recall (weighted),
@@ -42,7 +42,7 @@ public class SupervisedTrainer {
     private double bestAccuracy;
 
     /**
-     * Initializes the trainer with RandomForest, J48, and SMO classifiers.
+     * Initializes the trainer with RandomForest, J48, and AdaBoostM1 classifiers.
      */
     public SupervisedTrainer() {
         classifiers = new LinkedHashMap<>();
@@ -56,9 +56,11 @@ public class SupervisedTrainer {
         J48 j48 = new J48();
         classifiers.put("J48", j48);
 
-        // SMO — Support Vector Machine
-        SMO smo = new SMO();
-        classifiers.put("SMO", smo);
+        // AdaBoostM1 — boosting ensemble (100 iterations, J48 base learner)
+        AdaBoostM1 adaBoost = new AdaBoostM1();
+        adaBoost.setClassifier(new J48());
+        adaBoost.setNumIterations(100);
+        classifiers.put("AdaBoostM1", adaBoost);
     }
 
     /**

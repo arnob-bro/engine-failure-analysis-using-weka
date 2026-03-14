@@ -76,7 +76,7 @@ public class Main {
             // ----------------------------------------------------------
             // Step 8: Association rule mining — Apriori
             // ----------------------------------------------------------
-            AssociationMiner miner = new AssociationMiner(0.1, 0.6);
+            AssociationMiner miner = new AssociationMiner(0.1, 0.35);
             miner.mine(processedData);
 
             // ----------------------------------------------------------
